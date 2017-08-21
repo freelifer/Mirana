@@ -12,6 +12,7 @@ public class UsageTest {
     @Test
     public void testInit() {
 //        Usage.init("haha");
+        Usage.newBuilder().addCommand(null);
     }
 
     @Test
