@@ -1,4 +1,7 @@
 apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.github.kzhu-bstar'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -7,3 +10,7 @@ dependencies {
 
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}

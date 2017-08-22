@@ -3,6 +3,7 @@ package freelifer.sdk.usage;
 import java.util.ArrayList;
 import java.util.List;
 
+import freelifer.sdk.usage.internal.Print;
 import freelifer.sdk.usage.internal.UsageException;
 
 import static freelifer.sdk.usage.internal.Print.println;
@@ -46,6 +47,20 @@ public final class Usage {
         if (cmd.getAction() == null) {
             throw new UsageException("this command %s's action is null, please setAction(Action)", commandName);
         }
+        String[] dst = copyOf(args, 1);
+        if (!cmd.getAction().run(dst)) {
+            usage();
+            return;
+        }
+    }
+
+    private String[] copyOf(String[] src, int offset) {
+        if (src == null || src.length <= offset) {
+            return new String[0];
+        }
+        String[] dst = new String[src.length - offset];
+        System.arraycopy(src, offset, dst, 0, src.length - offset);
+        return dst;
     }
 
     private void usage() {
@@ -59,7 +74,11 @@ public final class Usage {
         // commands args
         println("The commands are:");
         println("");
-        printlnBySpace("%s compile packages and dependencies", "build");
+        if (commands != null) {
+            for (Command cmd : commands) {
+                printlnBySpace("%s compile packages and dependencies", Print.padWhitespaceRight(cmd.getCommandName(), 10));
+            }
+        }
         println("");
 
         // end
